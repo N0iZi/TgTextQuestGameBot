@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище TGBOTDB" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="is_final" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Replies">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="for_message_id" Type="int" Nullable="false" />
+          <Property Name="next_message_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="chat_id" Type="int" Nullable="false" />
+          <Property Name="current_message_id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Replies__for_mes__3B75D760">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="1" />
+          <End Role="Replies" Type="Self.Replies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Replies">
+              <PropertyRef Name="for_message_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Replies__next_me__3C69FB99">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="1" />
+          <End Role="Replies" Type="Self.Replies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Replies">
+              <PropertyRef Name="next_message_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__current_m__3D5E1FD2">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="current_message_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище TGBOTDBContainer">
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Replies" EntityType="Self.Replies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Replies__for_mes__3B75D760" Association="Self.FK__Replies__for_mes__3B75D760">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Replies" EntitySet="Replies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Replies__next_me__3C69FB99" Association="Self.FK__Replies__next_me__3C69FB99">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Replies" EntitySet="Replies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__current_m__3D5E1FD2" Association="Self.FK__Users__current_m__3D5E1FD2">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TGBOTDB" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="is_final" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Replies" Relationship="Self.FK__Replies__for_mes__3B75D760" FromRole="Messages" ToRole="Replies" />
+          <NavigationProperty Name="RepliesIncoming" Relationship="Self.FK__Replies__next_me__3C69FB99" FromRole="Messages" ToRole="Replies" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__current_m__3D5E1FD2" FromRole="Messages" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Replies">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="for_message_id" Type="Int32" Nullable="false" />
+          <Property Name="next_message_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Messages" Relationship="Self.FK__Replies__for_mes__3B75D760" FromRole="Replies" ToRole="Messages" />
+          <NavigationProperty Name="MessagesNext" Relationship="Self.FK__Replies__next_me__3C69FB99" FromRole="Replies" ToRole="Messages" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="chat_id" Type="Int32" Nullable="false" />
+          <Property Name="current_message_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Messages" Relationship="Self.FK__Users__current_m__3D5E1FD2" FromRole="Users" ToRole="Messages" />
+        </EntityType>
+        <Association Name="FK__Replies__for_mes__3B75D760">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="1" />
+          <End Role="Replies" Type="Self.Replies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Replies">
+              <PropertyRef Name="for_message_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Replies__next_me__3C69FB99">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="1" />
+          <End Role="Replies" Type="Self.Replies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Replies">
+              <PropertyRef Name="next_message_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__current_m__3D5E1FD2">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="current_message_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TGBOTEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Messages" EntityType="Self.Messages" />
+          <EntitySet Name="Replies" EntityType="Self.Replies" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK__Replies__for_mes__3B75D760" Association="Self.FK__Replies__for_mes__3B75D760">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Replies" EntitySet="Replies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Replies__next_me__3C69FB99" Association="Self.FK__Replies__next_me__3C69FB99">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Replies" EntitySet="Replies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__current_m__3D5E1FD2" Association="Self.FK__Users__current_m__3D5E1FD2">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TGBOTDBContainer" CdmEntityContainer="TGBOTEntities">
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="TGBOTDB.Messages">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="is_final" ColumnName="is_final" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Replies">
+            <EntityTypeMapping TypeName="TGBOTDB.Replies">
+              <MappingFragment StoreEntitySet="Replies">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="for_message_id" ColumnName="for_message_id" />
+                <ScalarProperty Name="next_message_id" ColumnName="next_message_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TGBOTDB.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="chat_id" ColumnName="chat_id" />
+                <ScalarProperty Name="current_message_id" ColumnName="current_message_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -48,6 +48,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,12 +61,58 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Messages.cs">
+      <DependentUpon>TGBOTDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Replies.cs">
+      <DependentUpon>TGBOTDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TGBOTDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TGBOTDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TGBOTDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TGBOTDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TGBOTDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TGBOTDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Users.cs">
+      <DependentUpon>TGBOTDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="Model\TGBOTDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TGBOTDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Model\TGBOTDB.edmx.diagram">
+      <DependentUpon>TGBOTDB.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\TGBOTDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TGBOTDB.Context.cs</LastGenOutput>
+      <DependentUpon>TGBOTDB.edmx</DependentUpon>
+    </Content>
+    <Content Include="Model\TGBOTDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TGBOTDB.edmx</DependentUpon>
+      <LastGenOutput>TGBOTDB.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
