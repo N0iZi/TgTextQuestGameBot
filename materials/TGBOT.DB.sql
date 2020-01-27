@@ -1,3 +1,5 @@
+use [TGBOT]
+
 CREATE TABLE [Messages] (
   [id] int PRIMARY KEY IDENTITY(1, 1),
   [content] nvarchar(MAX) NOT NULL,
