@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBHelper.cs" />
     <Compile Include="Model\Messages.cs">
       <DependentUpon>TGBOTDB.tt</DependentUpon>
     </Compile>
