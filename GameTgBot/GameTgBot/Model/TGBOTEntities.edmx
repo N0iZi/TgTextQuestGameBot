@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище TGBOTDB" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище TGBOTModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Messages">
           <Key>
             <PropertyRef Name="id" />
@@ -27,7 +27,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="chat_id" Type="int" Nullable="false" />
+          <Property Name="chat_id" Type="bigint" Nullable="false" />
           <Property Name="current_message_id" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__Replies__for_mes__3B75D760">
@@ -66,7 +66,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище TGBOTDBContainer">
+        <EntityContainer Name="Хранилище TGBOTModelContainer">
           <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Replies" EntityType="Self.Replies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -87,7 +87,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="TGBOTDB" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="TGBOTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Messages">
           <Key>
             <PropertyRef Name="id" />
@@ -115,7 +115,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="chat_id" Type="Int32" Nullable="false" />
+          <Property Name="chat_id" Type="Int64" Nullable="false" />
           <Property Name="current_message_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Messages" Relationship="Self.FK__Users__current_m__3D5E1FD2" FromRole="Users" ToRole="Messages" />
         </EntityType>
@@ -155,7 +155,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TGBOTEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Messages" EntityType="Self.Messages" />
           <EntitySet Name="Replies" EntityType="Self.Replies" />
           <EntitySet Name="Users" EntityType="Self.Users" />
@@ -177,9 +177,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище TGBOTDBContainer" CdmEntityContainer="TGBOTEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TGBOTModelContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="Messages">
-            <EntityTypeMapping TypeName="TGBOTDB.Messages">
+            <EntityTypeMapping TypeName="TGBOTModel.Messages">
               <MappingFragment StoreEntitySet="Messages">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="content" ColumnName="content" />
@@ -188,7 +188,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Replies">
-            <EntityTypeMapping TypeName="TGBOTDB.Replies">
+            <EntityTypeMapping TypeName="TGBOTModel.Replies">
               <MappingFragment StoreEntitySet="Replies">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="content" ColumnName="content" />
@@ -198,7 +198,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="TGBOTDB.Users">
+            <EntityTypeMapping TypeName="TGBOTModel.Users">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="chat_id" ColumnName="chat_id" />

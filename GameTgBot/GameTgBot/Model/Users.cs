@@ -15,7 +15,7 @@ namespace GameTgBot.Model
     public partial class Users
     {
         public int id { get; set; }
-        public int chat_id { get; set; }
+        public long chat_id { get; set; }
         public int current_message_id { get; set; }
     
         public virtual Messages Messages { get; set; }

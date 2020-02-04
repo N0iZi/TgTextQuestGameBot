@@ -13,10 +13,10 @@ namespace GameTgBot.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TGBOTEntities : DbContext
+    public partial class Entities : DbContext
     {
-        public TGBOTEntities()
-            : base("name=TGBOTEntities")
+        public Entities()
+            : base("name=Entities")
         {
         }
     

@@ -10,9 +10,9 @@ namespace GameTgBot
     public static class DBHelper
     {
 
-        public static int GetChatCurrentStatus(int chatId)
+        public static int GetChatCurrentStatus(long chatId)
         {
-            using (var context = new TGBOTEntities())
+            using (var context = new Entities())
             {
                 var user = context.Users
                     .Where(u => u.chat_id == chatId)
@@ -24,9 +24,9 @@ namespace GameTgBot
             }
         }
 
-        public static bool CheckIsNewUser(int chatId)
+        public static bool CheckIsNewUser(long chatId)
         {
-            using (var context = new TGBOTEntities())
+            using (var context = new Entities())
             {
                 var user = context.Users
                     .Where(u => u.chat_id == chatId)
@@ -38,9 +38,9 @@ namespace GameTgBot
             }
         }
 
-        public static void RegisterNewUser(int chatId)
+        public static void RegisterNewUser(long chatId)
         {
-            using (var context = new TGBOTEntities())
+            using (var context = new Entities())
             {
                 var user = context.Users
                     .Where(u => u.chat_id == chatId)
@@ -60,9 +60,9 @@ namespace GameTgBot
             }
         }
 
-        public static void RestartGame(int chatId)
+        public static void RestartGame(long chatId)
         {
-            using (var context = new TGBOTEntities())
+            using (var context = new Entities())
             {
                 var user = context.Users
                     .Where(u => u.chat_id == chatId)
@@ -80,7 +80,7 @@ namespace GameTgBot
         public static Dictionary<string, int> GetNextOptions(int messageId)
         {
             var options = new Dictionary<string, int>();
-            using (var context = new TGBOTEntities())
+            using (var context = new Entities())
             {
                 var message = context.Messages
                     .Where(msg => msg.id == messageId)
@@ -98,7 +98,7 @@ namespace GameTgBot
 
         public static void GetStartMessage(out int messageId, out string messageContent)
         {
-            using (var context = new TGBOTEntities())
+            using (var context = new Entities())
             {
                 var message = context.Messages
                     .Where(msg => msg.id == 1)
@@ -108,10 +108,29 @@ namespace GameTgBot
             }
         }
 
-        public static void MoveToNextMessage(int chatId, int replyId, out int newMessageId, out string newMessageContent, out bool isNextMessageFinal)
+        public static void GetCurrentMessage(long chatId, out int messageId, out string messageContent, out bool isMessageFinal)
+        {
+            messageId = default; messageContent = default; isMessageFinal = default;
+            using (var context = new Entities())
+            {
+                var user = context.Users
+                    .Where(u => u.chat_id == chatId)
+                    .FirstOrDefault();
+                if (user == null)
+                    throw new NullReferenceException("USER_NOT_FOUND");
+                else
+                {
+                    messageId = user.Messages.id;
+                    messageContent = user.Messages.content;
+                    isMessageFinal = user.Messages.is_final;
+                }
+            }
+        }
+
+        public static void MoveToNextMessage(long chatId, int replyId, out int newMessageId, out string newMessageContent, out bool isNextMessageFinal)
         {
             newMessageId = default; newMessageContent = default; isNextMessageFinal = default;
-            using (var context = new TGBOTEntities())
+            using (var context = new Entities())
             {
                 var reply = context.Replies
                     .Where(rply => rply.id == replyId)
@@ -127,10 +146,11 @@ namespace GameTgBot
                         throw new NullReferenceException("USER_NOT_FOUND");
                     else
                     {
-                        user.current_message_id = reply.next_message_id;
                         newMessageId = reply.next_message_id;
                         newMessageContent = reply.MessagesNext.content;
                         isNextMessageFinal = reply.MessagesNext.is_final;
+                        user.current_message_id = reply.next_message_id;
+                        context.SaveChanges();
                     }
                 }
             }
